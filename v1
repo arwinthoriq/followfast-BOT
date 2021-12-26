@@ -1,0 +1,71 @@
+<script language=javascript>
+var mywindow;
+var mysite1=0;
+var starttime=0;
+var endtime=0;
+var sectime = 1;
+var timerseconds = 0;
+var mysiteT = 0;
+var nowplaying = 0;
+var waitingseconds = 39;
+
+function SurfPlayVideo() {
+mywindow = window.open('https://href.li?http://youtube.com/watch?v=lOkz8aY2aFk');
+$("#Hint").html('<img src="img/loader.gif">');
+$.ajax({ type: "GET", url: "gettime.php", success: function(msg){ 
+	starttime = msg;
+	mysite1='205762';
+	mysiteT='25757104';
+	timerseconds = waitingseconds;
+	nowplaying = 1;
+	document.getElementById("Hint").style.display='block';
+	setTimeout("DisplayTimer();", 1000);
+	setTimeout("OkAddCoinsWell2();", 1000*waitingseconds);
+	} });
+}
+function DisplayTimer(){
+	if (nowplaying == 1){
+	timerseconds =timerseconds -1;
+	$("#Hint").html('<font size="3"><h1>You will earn points in '+timerseconds+' Seconds.</h1></font>');
+	setTimeout("DisplayTimer();", 1000);
+	}
+}
+
+function OkAddCoinsWell2(){
+	nowplaying = 0;
+	$("#Hint").html('<img src="img/loader.gif">');
+	if(mywindow.closed){
+		alert('You had closed popup window !');
+		window.location = 'http://followfast.com';}
+	else{
+				$.ajax({
+        				type: "POST",
+        				url: "ytreceive.php",
+        				data: "data="+mysite1+ "---" + '26293838' + "---" + mysiteT,        
+        				cache: false,
+        				success: function(){ 
+        				$("#Hint").html('<font size="3"><h1>Points added to your balance!</h1></font>');
+        				mywindow.close();
+        				document.getElementById('Mybalancenow').contentWindow.location.reload(true);
+        				setTimeout("RefreshMe();", 1000);
+        				}
+    				});
+	}
+}
+function SkipThisPage(mysiteid){
+		document.getElementById("Hint").style.display='block';
+		$("#Hint").html('<img src="img/loader.gif">');
+		$.ajax({
+        		type: "POST",
+        		url: "ytskip.php",
+        		data: "id=" + mysiteid,        
+        		cache: false,
+        		success: function(){
+        		$("#Hint").html('<font size="4" color="blue">Skipped!</font>');
+        		RefreshMe();
+        		removeElement('tbl', mysiteid);
+        		}
+    		});
+	}
+function RefreshMe(){window.location = 'youtube.php';}
+</script>
